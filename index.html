@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sevgi Şaheseri</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(120deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.box {
+    background: rgba(255,255,255,0.95);
+    border-radius: 25px;
+    padding: 30px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+h2 {
+    color: #ff1a75;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 8px #fff;
+}
+
+p {
+    font-size: 1.2em;
+    color: #333;
+    margin: 10px 0;
+}
+
+button {
+    margin: 15px 10px 0 10px;
+    padding: 12px 25px;
+    font-size: 1.2em;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#loveBtn { background:#ff4d6d; color:white;}
+#yesBtn { background:#4CAF50; color:white;}
+#noBtn { background:#f44336; color:white;}
+
+.small-heart {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: red;
+    transform: rotate(45deg);
+    animation: floatUp linear forwards;
+}
+
+.small-heart:before,
+.small-heart:after {
+    content:"";
+    position:absolute;
+    width:15px;
+    height:15px;
+    background:red;
+    border-radius:50%;
+}
+
+.small-heart:before { top:-7.5px; left:0; }
+.small-heart:after { left:7.5px; top:0; }
+
+@keyframes floatUp {
+    0% { transform: translateY(0) rotate(45deg); opacity:1; }
+    100% { transform: translateY(-80px) rotate(45deg); opacity:0; }
+}
+
+#yesMessage {
+    font-size: 1.3em;
+    color: #4CAF50;
+    margin-top: 15px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="box">
+        <h2>Seni Neden Seviyorum?</h2>
+        <p id="loveReasons">Butona bas ve göreceksin ❤️</p>
+        <button id="loveBtn">Sebebini Göster 💖</button>
+    </div>
+
+    <div class="box">
+        <h2>Benimle Barışır Mısın?</h2>
+        <button id="yesBtn">Evet 🫶</button>
+        <button id="noBtn">Hayır 😢</button>
+        <p id="yesMessage"></p>
+    </div>
+
+</div>
+
+<script>
+// 8 neden
+const reasons = [
+    "Gülüşün dünyamı aydınlatıyor 🌞",
+    "Sen yanımdayken her şey daha güzel 💖",
+    "Sen benim en değerli hazinemsin 💎",
+    "Seninle her an bir macera 🎢",
+    "Kalbim sana ait 💓",
+    "Senin yanında kendim olabiliyorum 😌",
+    "Seninle hayat renkli 🎨",
+    "Sana her baktığımda kalbim hızlanıyor 💕"
+];
+
+let reasonIndex = 0;
+const loveBtn = document.getElementById('loveBtn');
+const loveReasons = document.getElementById('loveReasons');
+
+loveBtn.addEventListener('click', ()=>{
+    loveReasons.textContent = reasons[reasonIndex];
+    reasonIndex = (reasonIndex +1) % reasons.length;
+});
+
+// Evet / Hayır butonları
+const yesBtn = document.getElementById('yesBtn');
+const noBtn = document.getElementById('noBtn');
+const yesMessage = document.getElementById('yesMessage');
+
+yesBtn.addEventListener('click', ()=>{
+    // Butonu büyüt
+    let currentSize = parseInt(window.getComputedStyle(yesBtn).fontSize);
+    yesBtn.style.fontSize = (currentSize + 5) + "px";
+    // Romantik mesaj göster
+    yesMessage.textContent = "bana bir şans daha verdiğin için çok teşekkür ederimm yavrumm ❤️";
+});
+
+noBtn.addEventListener('click', ()=>{
+    let currentSize = parseInt(window.getComputedStyle(noBtn).fontSize);
+    if(currentSize > 8){
+        noBtn.style.fontSize = (currentSize - 3) + "px";
+    }
+});
+
+// Tıklandığında küçük kalpler
+document.body.addEventListener('click', (e)=>{
+    if(e.target.tagName !== "BUTTON"){
+        const heart = document.createElement('div');
+        heart.className = 'small-heart';
+        heart.style.left = (e.clientX - 7) + 'px';
+        heart.style.top = (e.clientY - 7) + 'px';
+        heart.style.background = `hsl(${Math.random()*360}, 100%, 70%)`;
+        heart.style.animationDuration = (1 + Math.random()*1.5) + 's';
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(), 2000);
+    }
+});
+</script>
+
+</body>
+</html>
